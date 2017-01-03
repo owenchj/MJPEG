@@ -1,0 +1,12 @@
+desc.o: desc.c /home/jchen/.mylib/dsx/lib/backends/common/include/srl.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_public_types.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_lock.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_mwmr.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_log.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_barrier.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_memspace.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_system_functions.h \
+ /home/jchen/.mylib/dsx/lib/backends/posix/include/srl_hw_helpers.h \
+ /home/jchen/.mylib/dsx/lib/backends/posix/include/srl_private_types.h \
+ idct_proto.h vld_proto.h iqzz_proto.h demux_proto.h tg_proto.h \
+ ramdac_proto.h libu_proto.h

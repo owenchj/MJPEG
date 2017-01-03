@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+import dsx
+
+fifo0 = dsx.Mwmr('fifo0', 32, 4)
+
+tcg = dsx.Tcg(
+    dsx.Task('prod0', 'producer',
+             {'output':fifo0} ),
+    dsx.Task('cons0', 'consumer',
+             {'input':fifo0} ),
+    )
+
+
+tcg.generate(dsx.Posix())

@@ -1,0 +1,2 @@
+ramdac_x11.o: /home/jchen/Work/class/archi4/mjpeg/src/ramdac/ramdac_x11.c \
+ /home/jchen/Work/class/archi4/mjpeg/src/ramdac/ramdac_x11.h

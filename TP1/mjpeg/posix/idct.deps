@@ -1,0 +1,12 @@
+idct.o: /home/jchen/Work/class/archi4/mjpeg/src/idct/idct.c \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_public_types.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_lock.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_mwmr.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_log.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_barrier.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_memspace.h \
+ /home/jchen/.mylib/dsx/lib/backends/common/include/srl_system_functions.h \
+ /home/jchen/.mylib/dsx/lib/backends/posix/include/srl_hw_helpers.h \
+ idct_proto.h \
+ /home/jchen/Work/class/archi4/mjpeg/src/idct/../common/jpeg.h

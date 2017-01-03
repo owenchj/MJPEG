@@ -1,0 +1,176 @@
+
+/home/jchen/Work/class/archi4/mjpeg/src/tg/tg.c,50
+static FILE *fi;fi7,88
+FUNC(9,106
+FUNC(20,257
+
+/home/jchen/Work/class/archi4/mjpeg/src/ramdac/ramdac.c,75
+static uint8_t *frame_buffer;frame_buffer9,126
+FUNC(11,157
+FUNC(16,221
+
+/home/jchen/Work/class/archi4/mjpeg/src/ramdac/ramdac_x11.c,356
+static uint8_t *FrameBuffer;FrameBuffer16,248
+static int inited 17,277
+static int has_fb 18,300
+static int map_fd;19,323
+static pid_t screen_pid;20,342
+static uint32_t width,21,367
+static uint32_t width, height;21,367
+static int control_fd;22,398
+static const int bpp 24,422
+void* fb_init(26,450
+void fb_update(91,1697
+void fb_cleanup(97,1766
+
+/home/jchen/Work/class/archi4/mjpeg/src/ramdac/ramdac_x11.h,24
+#define XRAMDAC_H_2,19
+
+/home/jchen/Work/class/archi4/mjpeg/src/libu/libu.c,11
+FUNC(6,71
+
+/home/jchen/Work/class/archi4/mjpeg/src/idct/idct.c,872
+#define	INT_MAX	7,130
+#define	INT_MIN	8,168
+#define c0_1 13,312
+#define c0_s2 14,332
+#define c1_1 15,352
+#define c1_s2 16,372
+#define c2_1 17,392
+#define c2_s2 18,412
+#define c3_1 19,432
+#define c3_s2 20,452
+#define c4_1 21,472
+#define c4_s2 22,492
+#define c5_1 23,512
+#define c5_s2 24,531
+#define c6_1 25,551
+#define c6_s2 26,570
+#define c7_1 27,589
+#define c7_s2 28,608
+#define c8_1 29,627
+#define c8_s2 30,643
+#define sqrt2 31,659
+#define ARITH_BITS 36,801
+#define ARITH_MIN 39,893
+#define ARITH_MAX 40,940
+#define S_BITS 43,1047
+#define C_BITS 45,1149
+#define descale(48,1241
+static const int32_t COS[COS50,1310
+static inline void rot(55,1464
+#define Cos(57,1557
+#define Sin(58,1583
+#undef Cos63,1796
+#undef Sin64,1807
+#define but(68,1876
+static inline void idct_1d(74,2059
+FUNC(108,2959
+#define Y(113,3053
+#define Idct(114,3086
+
+/home/jchen/Work/class/archi4/mjpeg/src/vld/vld.c,1158
+    srl_mwmr_t io;13,290
+    size_t available;14,309
+    uint32_t current;15,331
+    size_t len;16,353
+    uint32_t buf[buf17,369
+} bitreader_context;18,390
+static inline void bitreader_refill(20,412
+static uint32_t bitreader_get(30,694
+static inline uint8_t bitreader_get_one(53,1203
+static void bitreader_init(63,1429
+#define HUFF_MAX_SIZE(75,1726
+    int32_t MinCode;78,1827
+    int32_t MaxCode;79,1848
+    int32_t ValPtr;80,1869
+} huff_code;81,1889
+    uint8_t *HTable[HTable84,1920
+    huff_code code[code85,1944
+    uint8_t DC_Table0[DC_Table086,1971
+    uint8_t DC_Table1[DC_Table187,2019
+    uint8_t AC_Table0[AC_Table088,2067
+    uint8_t AC_Table1[AC_Table189,2115
+} huff_context;90,2163
+    uint8_t CID;94,2234
+    char QT;95,2273
+    char DC_HT;96,2319
+    char AC_HT;97,2366
+    int32_t PRED;98,2413
+} cd_t;99,2458
+void huff_tables_init(101,2467
+int32_t huff_load_tables(112,2766
+static inline int32_t huff_get_symbol(172,4886
+inline static int32_t intceil(190,5287
+inline static long reformat(197,5466
+#define HUFF_EOB 209,5691
+#define HUFF_ZRL 210,5728
+vld_decode_unpack_block(220,5974
+FUNC(272,7611
+
+/home/jchen/Work/class/archi4/mjpeg/src/iqzz/iqzz.c,46
+static const uint8_t ZZ[ZZ7,72
+FUNC(18,370
+
+/home/jchen/Work/class/archi4/mjpeg/src/demux/demux.c,99
+uint16_t get_next_mk(9,133
+void load_quant_tables(32,636
+void skip_segment(47,992
+FUNC(64,1333
+
+/home/jchen/Work/class/archi4/mjpeg/src/common/block_io.c,478
+#define io_refill(5,51
+#define io_flush(14,460
+void block_io_flush(23,868
+void block_io_discard(30,996
+void block_io_init_out(36,1105
+void block_io_init_in(45,1307
+uint8_t block_io_read_int8(55,1506
+uint16_t block_io_read_int16(67,1736
+uint32_t block_io_read_int32(88,2212
+void block_io_write_int8(110,2618
+void block_io_write_int16(118,2767
+void block_io_write_int32(132,3035
+void block_io_io(157,3536
+void block_io_skip(182,4076
+void block_io_set_left(195,4347
+
+/home/jchen/Work/class/archi4/mjpeg/src/common/block_io.h,209
+#define BLOCK_IO_H2,19
+typedef struct block_io 6,57
+    int32_t size;7,83
+    int32_t left;8,101
+    uint8_t *ptr;ptr9,119
+    uint8_t *buffer;buffer10,137
+    srl_mwmr_t io;11,158
+} block_io;12,177
+
+/home/jchen/Work/class/archi4/mjpeg/src/common/jpeg.h,686
+#define JPEG_H_2,16
+#define ROUND_UP(4,33
+#define BLOCK_WIDTH 6,97
+#define BLOCK_HEIGHT 7,119
+#define BLOCK_SIZE 8,142
+#define MAX_WIDTH 10,189
+#define MAX_HEIGHT 11,236
+#define BLOCKS_W 13,287
+#define BLOCKS_H 14,328
+#define NBLOCKS 16,372
+#define SOI_MK	21,447
+#define APP_MK	22,491
+#define COM_MK	23,539
+#define SOF_MK	24,585
+#define SOS_MK	25,629
+#define DHT_MK	26,672
+#define DQT_MK	27,715
+#define DRI_MK	28,758
+#define EOI_MK	29,804
+#define MK_MSK	30,847
+#define RST_MK(32,901
+#define first_quad(37,977
+#define second_quad(38,1010
+#define HUFF_ID(39,1043
+#define DC_CLASS 40,1088
+#define AC_CLASS 41,1114
+#define EOF 44,1153
+#define DATA_MAGIC 47,1176
