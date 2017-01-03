@@ -31,7 +31,7 @@ def VgmnNoirqMulti( proc_count,
     for i in range(proc_count):
         cpu = pf.create('caba:vci_xcache_wrapper', 'cpu%d'%i,
                         iss_t = "common:mips32el",
-                        ident = 0,
+                        ident = i,
                         icache_ways = 1,
                         icache_sets = icache_lines,
                         icache_words = icache_words,

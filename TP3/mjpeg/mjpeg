@@ -66,7 +66,7 @@ tcg = Tcg(
 #########################################################
 from vgmn_noirq_multi import VgmnNoirqMulti
 
-archi = VgmnNoirqMulti(proc_count = 1, ram_count = 2)
+archi = VgmnNoirqMulti(proc_count = 5, ram_count = 2)
 
 
 #########################################################
@@ -132,25 +132,25 @@ mapper.map("demux",
 )
 
 mapper.map("vld",
-   run   = "cpu0",
+   run   = "cpu1",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("iqzz",
-   run   = "cpu0",
+   run   = "cpu2",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("idct",
-   run   = "cpu0",
+   run   = "cpu3",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("libu",
-   run   = "cpu0",
+   run   = "cpu4",
    stack = "cram0",
    desc  = "cram0"
 )
@@ -164,6 +164,22 @@ mapper.map('ramdac',
 # mapping the software objects associated to a processor
 
 mapper.map( 'cpu0',
+  private = "cram0",
+  shared  = "uram0")
+
+mapper.map( 'cpu1',
+  private = "cram0",
+  shared  = "uram0")
+
+mapper.map( 'cpu2',
+  private = "cram0",
+  shared  = "uram0")
+
+mapper.map( 'cpu3',
+  private = "cram0",
+  shared  = "uram0")
+
+mapper.map( 'cpu4',
   private = "cram0",
   shared  = "uram0")
 
