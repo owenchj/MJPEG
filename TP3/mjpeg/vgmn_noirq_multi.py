@@ -2,8 +2,12 @@
 
 import dsx
 import soclib
-
-def VgmnNoirqMono():
+def VgmnNoirqMulti( proc_count,
+                    ram_count,
+                    icache_lines = 16,
+                    icache_words = 8,
+                    dcache_lines = 16,
+                    dcache_words = 8 ):
     pf = soclib.Architecture(cell_size = 4,
             plen_size = 8,
             addr_size = 32,
@@ -24,17 +28,17 @@ def VgmnNoirqMono():
 
     vgmn = pf.create('caba:vci_vgmn', 'vgmn0', min_latency = 10, fifo_depth = 8, mt = mt)
 
-    cpu = pf.create('caba:vci_xcache_wrapper', 'cpu0',
-                    iss_t = "common:mips32el",
-                    ident = 0,
-                    icache_ways = 1,
-                    icache_sets = 16,
-                    icache_words = 8,
-                    dcache_ways = 1,
-                    dcache_sets = 16,
-                    dcache_words = 8)
-
-    vgmn.to_initiator.new() // cpu.vci
+    for i in range(proc_count):
+        cpu = pf.create('caba:vci_xcache_wrapper', 'cpu%d'%i,
+                        iss_t = "common:mips32el",
+                        ident = 0,
+                        icache_ways = 1,
+                        icache_sets = icache_lines,
+                        icache_words = icache_words,
+                        dcache_ways = 1,
+                        dcache_sets = dcache_lines,
+                        dcache_words = dcache_words)
+        vgmn.to_initiator.new() // cpu.vci
 
 # Coprocessors generation (commented for now)
 #   Here, we retrieve the hardware implementation of TG which allows us to
@@ -56,7 +60,7 @@ def VgmnNoirqMono():
     ctrl.vci_target // vgmn.to_target.new()
 
 
-    for i in range(2):
+    for i in range(ram_count):
         ram = pf.create('caba:vci_ram', 'ram%d'%i)
         base = 0x10000000*i+0x10000000
         ram.addSegment('cram%d'%i, base, 0x100000, True)
@@ -76,4 +80,4 @@ def VgmnNoirqMono():
 # methods if imported from somewhere else
 
 if __name__ == '__main__':
-    VgmnNoirqMono().generate(soclib.PfDriver())
+    VgmnNoirqMutli().generate(soclib.PfDriver())

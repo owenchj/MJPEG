@@ -64,9 +64,9 @@ tcg = Tcg(
 # must be included, and the path to the directory
 # containing this file must be defined
 #########################################################
-from vgmn_noirq_mono import VgmnNoirqMono
+from vgmn_noirq_multi import VgmnNoirqMulti
 
-archi = VgmnNoirqMono()
+archi = VgmnNoirqMulti(proc_count = 1, ram_count = 2)
 
 
 #########################################################
