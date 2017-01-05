@@ -2,6 +2,14 @@
 import dsx
 from dsx import *
 
+# debut du fichier de description
+# important: importer dsx en premier
+from dsx import *
+import sys
+
+dcache_lines = int(sys.argv[1])
+icache_lines = int(sys.argv[2])
+
 # Declaration of all MWMR fifos
 tg_demux    = Mwmr('tg_demux'   , 32,  2)
 demux_vld   = Mwmr('demux_vld'  , 32,  2)
@@ -66,7 +74,12 @@ tcg = Tcg(
 #########################################################
 from vgmn_noirq_multi import VgmnNoirqMulti
 
-archi = VgmnNoirqMulti(proc_count = 5, ram_count = 2)
+archi = VgmnNoirqMulti(proc_count = 2,
+                       ram_count = 2,
+                       icache_lines = icache_lines,
+                       icache_words = 8,
+                       dcache_lines = dcache_lines,
+                       dcache_words = 8)
 
 
 #########################################################
@@ -126,31 +139,31 @@ mapper.map('tg',
   )
 
 mapper.map("demux",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
-)
-
-mapper.map("vld",
    run   = "cpu1",
    stack = "cram0",
    desc  = "cram0"
 )
 
+mapper.map("vld",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
 mapper.map("iqzz",
-   run   = "cpu2",
+   run   = "cpu1",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("idct",
-   run   = "cpu3",
+   run   = "cpu0",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("libu",
-   run   = "cpu4",
+   run   = "cpu1",
    stack = "cram0",
    desc  = "cram0"
 )
@@ -171,17 +184,17 @@ mapper.map( 'cpu1',
   private = "cram0",
   shared  = "uram0")
 
-mapper.map( 'cpu2',
-  private = "cram0",
-  shared  = "uram0")
+# mapper.map( 'cpu2',
+#   private = "cram0",
+#   shared  = "uram0")
 
-mapper.map( 'cpu3',
-  private = "cram0",
-  shared  = "uram0")
+# mapper.map( 'cpu3',
+#   private = "cram0",
+#   shared  = "uram0")
 
-mapper.map( 'cpu4',
-  private = "cram0",
-  shared  = "uram0")
+# mapper.map( 'cpu4',
+#   private = "cram0",
+#   shared  = "uram0")
 
 # mapping the software objects used by the embedded OS
 
