@@ -1,0 +1,302 @@
+#!/usr/bin/env python
+import dsx
+from dsx import *
+
+# debut du fichier de description
+# important: importer dsx en premier
+from dsx import *
+import sys
+
+dcache_lines = int(sys.argv[1])
+icache_lines = int(sys.argv[2])
+
+# Declaration of all MWMR fifos
+tg_split      = Mwmr('tg_split'       , 32,  2)
+split_demux_0 = Mwmr('split_demux_0'  , 32,  2)
+split_demux_1 = Mwmr('split_demux_1'  , 32,  2)
+demux_vld_0   = Mwmr('demux_vld_0'    , 32,  2)
+demux_vld_1   = Mwmr('demux_vld_1'    , 32,  2)
+vld_iqzz_0    = Mwmr('vld_iqzz_0'     , 128, 2)
+vld_iqzz_1    = Mwmr('vld_iqzz_1'     , 128, 2)
+iqzz_idct_0   = Mwmr('iqzz_idct_0'    , 256, 2)
+iqzz_idct_1   = Mwmr('iqzz_idct_1'    , 256, 2)
+idct_libu_0   = Mwmr('idct_libu_0'    , 64,  2)
+idct_libu_1   = Mwmr('idct_libu_1'    , 64,  2)
+libu_ramdac   = Mwmr('libu_ramdac'    , 8*48,2)
+huffman_0       = Mwmr('huffman_0'    , 32,  2)
+huffman_1       = Mwmr('huffman_1'    , 32,  2)
+quanti_0        = Mwmr('quanti_0'     , 64,  2)
+quanti_1        = Mwmr('quanti_1'     , 64,  2)
+
+tcg = Tcg(
+    Task( 'tg', "tg",
+          {'output':tg_split },
+          defines = {'FILE_NAME':'"plan.mjpg"'}),
+
+    Task( 'split', "split",
+          {'input':tg_split,
+           'output_0':split_demux_0,
+           'output_1':split_demux_1 },
+            defines = {'WIDTH':"48",
+                       'HEIGHT':"48"}),
+
+    Task( 'demux0', "demux",
+          { 'input':split_demux_0,
+            'output':demux_vld_0,
+            'huffman':huffman_0,
+            'quanti':quanti_0 },
+            defines = {'WIDTH':"48",
+                       'HEIGHT':"48"}),
+
+    Task( 'demux1', "demux",
+          { 'input':split_demux_1,
+            'output':demux_vld_1,
+            'huffman':huffman_1,
+            'quanti':quanti_1 },
+            defines = {'WIDTH':"48",
+                       'HEIGHT':"48"}),
+
+    Task( 'vld0', 'vld',
+          { 'input':demux_vld_0,
+            'output':vld_iqzz_0,
+            'huffman':huffman_0 },
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'vld1', 'vld',
+          { 'input':demux_vld_1,
+            'output':vld_iqzz_1,
+            'huffman':huffman_1 },
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'iqzz0', 'iqzz',
+          { 'input':vld_iqzz_0,
+            'output':iqzz_idct_0,
+            'quanti':quanti_0 },
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'iqzz1', 'iqzz',
+          { 'input':vld_iqzz_1,
+            'output':iqzz_idct_1,
+            'quanti':quanti_1 },
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'idct0', 'idct',
+          { 'input':iqzz_idct_0,
+            'output': idct_libu_0},
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'idct1', 'idct',
+          { 'input':iqzz_idct_1,
+            'output': idct_libu_1},
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'libu', 'libu',
+          { 'input_0':idct_libu_0,
+            'input_1':idct_libu_1,
+            'output': libu_ramdac},
+            defines = {'WIDTH':"48",
+                     'HEIGHT':"48"}),
+
+    Task( 'ramdac', "ramdac",
+          { 'input': libu_ramdac },
+            defines = {'WIDTH':"48",
+                       'HEIGHT':"48"}),
+    )
+
+#########################################################
+# Section B : Hardware architecture
+#
+# The file containing the architecture definition
+# must be included, and the path to the directory
+# containing this file must be defined
+#########################################################
+from vgmn_noirq_multi import VgmnNoirqMulti
+
+archi = VgmnNoirqMulti(proc_count = 2,
+                       ram_count = 2,
+                       icache_lines = icache_lines,
+                       icache_words = 8,
+                       dcache_lines = dcache_lines,
+                       dcache_words = 8)
+
+
+#########################################################
+# Section C : Mapping
+#
+#########################################################
+
+mapper = Mapper(archi, tcg)
+
+# mapping the MWMR channel
+
+mapper.map( "tg_split",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "split_demux_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "split_demux_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "demux_vld_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "demux_vld_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "vld_iqzz_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "vld_iqzz_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "iqzz_idct_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "iqzz_idct_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "idct_libu_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "idct_libu_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "libu_ramdac",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "huffman_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "huffman_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "quanti_0",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+mapper.map( "quanti_1",
+  buffer = "cram1",
+  status = "cram1"
+)
+
+# mapping the "prod0" and "cons0" tasks
+
+mapper.map('tg',
+    coprocessor = 'tg0',
+    controller = 'tg0_ctrl'
+  )
+
+mapper.map("demux",
+   run   = "cpu1",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("vld",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("iqzz",
+   run   = "cpu1",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("idct",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("libu",
+   run   = "cpu1",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map('ramdac',
+    coprocessor = 'ramdac0',
+    controller = 'ramdac0_ctrl'
+  )
+
+
+# mapping the software objects associated to a processor
+
+mapper.map( 'cpu0',
+  private = "cram0",
+  shared  = "uram0")
+
+mapper.map( 'cpu1',
+  private = "cram0",
+  shared  = "uram0")
+
+# mapper.map( 'cpu2',
+#   private = "cram0",
+#   shared  = "uram0")
+
+# mapper.map( 'cpu3',
+#   private = "cram0",
+#   shared  = "uram0")
+
+# mapper.map( 'cpu4',
+#   private = "cram0",
+#   shared  = "uram0")
+
+# mapping the software objects used by the embedded OS
+
+mapper.map(tcg,
+  private = "cram1",
+  shared  = "uram1",
+  code    = "cram1",
+
+  # These lines are for getting output messages:
+  tty = "tty0",
+  tty_no = 0)
+
+######################################################
+# Section D : Code generation
+######################################################
+# Embedded software linked with the Mutek/S OS
+
+
+mapper.generate( MutekS() )
+
+tcg.generate( Posix() )
