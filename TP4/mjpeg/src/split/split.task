@@ -7,7 +7,7 @@ TaskModel(
                  'output_1':MwmrOutput(32),
                          },
         impls = [ SwTask( 'split',
-                                         stack_size = 4096,
+                                         stack_size = 4048,
                                          sources = [ 'split.c',
                                                                  '../common/block_io.c' ],
                                          defines = [ 'WIDTH', 'HEIGHT' ] )

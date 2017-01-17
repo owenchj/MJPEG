@@ -14,12 +14,8 @@ FUNC(libu)
   uint8_t Libu[WIDTH * BLOCK_HEIGHT];
 
   uint32_t i, j, k, n, m;
-  int16_t block;
 
-  /* printf("%d\n", BLOCK_WIDTH); */
-  /* printf("%d\n", BLOCK_HEIGHT); */
-
-  for(m = 0; m < 2; m++))
+  for(m = 0; m < 2; m++)
   {
       for (i = 0; i < BLOCKS_H; i++)
       {

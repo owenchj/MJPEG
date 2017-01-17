@@ -12,16 +12,16 @@ icache_lines = int(sys.argv[2])
 
 # Declaration of all MWMR fifos
 tg_split      = Mwmr('tg_split'       , 32,  2)
-split_demux_0 = Mwmr('split_demux_0'  , 32,  2)
-split_demux_1 = Mwmr('split_demux_1'  , 32,  2)
+split_demux_0 = Mwmr('split_demux_0'  , 32,  16) #
+split_demux_1 = Mwmr('split_demux_1'  , 32,  16) #
 demux_vld_0   = Mwmr('demux_vld_0'    , 32,  2)
 demux_vld_1   = Mwmr('demux_vld_1'    , 32,  2)
 vld_iqzz_0    = Mwmr('vld_iqzz_0'     , 128, 2)
 vld_iqzz_1    = Mwmr('vld_iqzz_1'     , 128, 2)
 iqzz_idct_0   = Mwmr('iqzz_idct_0'    , 256, 2)
 iqzz_idct_1   = Mwmr('iqzz_idct_1'    , 256, 2)
-idct_libu_0   = Mwmr('idct_libu_0'    , 64,  2)
-idct_libu_1   = Mwmr('idct_libu_1'    , 64,  2)
+idct_libu_0   = Mwmr('idct_libu_0'    , 64,  8) #
+idct_libu_1   = Mwmr('idct_libu_1'    , 64,  8) #
 libu_ramdac   = Mwmr('libu_ramdac'    , 8*48,2)
 huffman_0       = Mwmr('huffman_0'    , 32,  2)
 huffman_1       = Mwmr('huffman_1'    , 32,  2)
@@ -222,32 +222,62 @@ mapper.map('tg',
     controller = 'tg0_ctrl'
   )
 
-mapper.map("demux",
-   run   = "cpu1",
-   stack = "cram0",
-   desc  = "cram0"
-)
+mapper.map("split",
+           run   = "cpu0",
+           stack = "cram0",
+           desc  = "cram0"
+           )
 
-mapper.map("vld",
+mapper.map("demux0",
    run   = "cpu0",
    stack = "cram0",
    desc  = "cram0"
 )
 
-mapper.map("iqzz",
-   run   = "cpu1",
+mapper.map("demux1",
+   run   = "cpu0",
    stack = "cram0",
    desc  = "cram0"
 )
 
-mapper.map("idct",
+mapper.map("vld0",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("vld1",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("iqzz0",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("iqzz1",
+   run   = "cpu0",
+   stack = "cram1",
+   desc  = "cram0"
+)
+
+mapper.map("idct0",
+   run   = "cpu0",
+   stack = "cram0",
+   desc  = "cram0"
+)
+
+mapper.map("idct1",
    run   = "cpu0",
    stack = "cram0",
    desc  = "cram0"
 )
 
 mapper.map("libu",
-   run   = "cpu1",
+   run   = "cpu0",
    stack = "cram0",
    desc  = "cram0"
 )
@@ -260,25 +290,10 @@ mapper.map('ramdac',
 
 # mapping the software objects associated to a processor
 
-mapper.map( 'cpu0',
-  private = "cram0",
-  shared  = "uram0")
-
-mapper.map( 'cpu1',
-  private = "cram0",
-  shared  = "uram0")
-
-# mapper.map( 'cpu2',
-#   private = "cram0",
-#   shared  = "uram0")
-
-# mapper.map( 'cpu3',
-#   private = "cram0",
-#   shared  = "uram0")
-
-# mapper.map( 'cpu4',
-#   private = "cram0",
-#   shared  = "uram0")
+for i in range(2):
+    mapper.map( 'cpu%d'%i,
+                private = "cram0",
+                shared  = "uram0")
 
 # mapping the software objects used by the embedded OS
 
@@ -297,6 +312,6 @@ mapper.map(tcg,
 # Embedded software linked with the Mutek/S OS
 
 
-mapper.generate( MutekS() )
+#mapper.generate( MutekS() )
 
 tcg.generate( Posix() )
