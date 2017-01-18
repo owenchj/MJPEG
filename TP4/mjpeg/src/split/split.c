@@ -22,7 +22,7 @@ FUNC(split) {
     block_io_init_in(&input, input_buffer, 32, input_mwmr);
     block_io_init_out(&output, output_buffer, 32, output_mwmr[0]);
 
-    int r = 0;
+    int r = 1;
 
     while(1) {
 
@@ -34,7 +34,7 @@ FUNC(split) {
             {
 		  block_io_set_left(&output, 0xff);
 		  block_io_flush(&output);
-		  r = 1 - r; 
+		  r = 1 - r;
 		  output.io = output_mwmr[r];
             }
 	    block_io_write_int8(&output, buf_b);
