@@ -116,14 +116,19 @@ tcg = Tcg(
 # must be included, and the path to the directory
 # containing this file must be defined
 #########################################################
-from vgmn_noirq_multi import VgmnNoirqMulti
+from clustered_noirq_multi import ClusteredNoirqMulti
 
-archi = VgmnNoirqMulti(proc_count = 2,
-                       ram_count = 2,
-                       icache_lines = icache_lines,
-                       icache_words = 8,
-                       dcache_lines = dcache_lines,
-                       dcache_words = 8)
+archi = ClusteredNoirqMulti( cpus = [1, 2, 2, 1],
+                             rams = [1, 1, 1, 1],
+                             min_latency = 10 )
+
+# from vgmn_noirq_multi import VgmnNoirqMulti
+# archi = VgmnNoirqMulti(proc_count = 2,
+#                        ram_count = 2,
+#                        icache_lines = icache_lines,
+#                        icache_words = 8,
+#                        dcache_lines = dcache_lines,
+#                        dcache_words = 8)
 
 
 #########################################################
@@ -136,83 +141,83 @@ mapper = Mapper(archi, tcg)
 # mapping the MWMR channel
 
 mapper.map( "tg_split",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram0_0",
+  status = "cram0_0"
 )
 
 mapper.map( "split_demux_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "split_demux_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "demux_vld_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "demux_vld_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "vld_iqzz_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 mapper.map( "vld_iqzz_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 mapper.map( "iqzz_idct_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 mapper.map( "iqzz_idct_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 mapper.map( "idct_libu_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram3_0",
+  status = "cram3_0"
 )
 
 mapper.map( "idct_libu_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram3_0",
+  status = "cram3_0"
 )
 
 mapper.map( "libu_ramdac",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram3_0",
+  status = "cram3_0"
 )
 
 mapper.map( "huffman_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "huffman_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "quanti_0",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "quanti_1",
-  buffer = "cram1",
-  status = "cram1"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 # mapping the "prod0" and "cons0" tasks
@@ -223,63 +228,63 @@ mapper.map('tg',
   )
 
 mapper.map("split",
-           run   = "cpu0",
-           stack = "cram0",
-           desc  = "cram0"
+           run   = "cpu0_0",
+           stack = "cram0_0",
+           desc  = "cram0_0"
            )
 
 mapper.map("demux0",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu1_0",
+   stack = "cram0_0",
+   desc  = "cram0_0"
 )
 
 mapper.map("demux1",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu1_0",
+   stack = "cram0_0",
+   desc  = "cram0_0"
 )
 
 mapper.map("vld0",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu1_1",
+   stack = "cram1_0",
+   desc  = "cram1_0"
 )
 
 mapper.map("vld1",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu1_1",
+   stack = "cram1_0",
+   desc  = "cram1_0"
 )
 
 mapper.map("iqzz0",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu2_0",
+   stack = "cram2_0",
+   desc  = "cram2_0"
 )
 
 mapper.map("iqzz1",
-   run   = "cpu0",
-   stack = "cram1",
-   desc  = "cram0"
+   run   = "cpu2_0",
+   stack = "cram2_0",
+   desc  = "cram2_0"
 )
 
 mapper.map("idct0",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu2_1",
+   stack = "cram2_0",
+   desc  = "cram2_0"
 )
 
 mapper.map("idct1",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu2_1",
+   stack = "cram2_0",
+   desc  = "cram2_0"
 )
 
 mapper.map("libu",
-   run   = "cpu0",
-   stack = "cram0",
-   desc  = "cram0"
+   run   = "cpu3_0",
+   stack = "cram3_0",
+   desc  = "cram3_0"
 )
 
 mapper.map('ramdac',
@@ -289,21 +294,24 @@ mapper.map('ramdac',
 
 
 # mapping the software objects associated to a processor
-
-for i in range(2):
-    mapper.map( 'cpu%d'%i,
-                private = "cram0",
-                shared  = "uram0")
+ncpu = [1, 2, 2, 1]
+no=0
+for n in ncpu:
+    for i in range(n):
+        mapper.map( 'cpu%d_%d'%(no, i),
+                    private = "cram%d_0"%no,
+                    shared  = "uram%d_0"%no)
+    no=no+1
 
 # mapping the software objects used by the embedded OS
 
 mapper.map(tcg,
-  private = "cram1",
-  shared  = "uram1",
-  code    = "cram1",
+  private = "cram1_0",
+  shared  = "uram1_0",
+  code    = "cram1_0",
 
   # These lines are for getting output messages:
-  tty = "tty0",
+  tty = "tty",
   tty_no = 0)
 
 ######################################################
@@ -312,6 +320,6 @@ mapper.map(tcg,
 # Embedded software linked with the Mutek/S OS
 
 
-#mapper.generate( MutekS() )
+mapper.generate( MutekS() )
 
 tcg.generate( Posix() )

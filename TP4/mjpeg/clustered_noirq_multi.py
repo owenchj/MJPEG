@@ -82,13 +82,26 @@ def ClusteredNoirqMulti(
         vgmn.to_initiator.new() // lc.initiator_to_up
         vgmn.to_target.new() // lc.target_to_up
 
-        # if cluster == 0
         #   add tg at address 0x16400000
-        ...
+        if no == 0:
+            tg = dsx.TaskModel.getByName('tg').getImpl(soclib.HwTask)
+            # The creation returns two components
+            ctrl, coproc = tg.instanciate(arch, 'tg0')
+            # We need now to assign an address to the controller and to connect it
+            # to the interconnect (there is two ports to connect)
+            ctrl.addSegment('tg_ctrl', 0x16400000, 0x100, False)
+            ctrl.vci_initiator // lc.to_initiator.new()
+            ctrl.vci_target // lc.to_target.new()
 
-        # if cluster == 3
         #   add ramdac at address 0x46400000
-        ...
+        if no == 3:
+            # same with ramdac
+            ramdac = dsx.TaskModel.getByName('ramdac').getImpl(soclib.HwTask)
+            ctrl, coproc = ramdac.instanciate(arch, 'ramdac0')
+            ctrl.addSegment('ramdac_ctrl', 0x46400000, 0x100, False)
+            ctrl.vci_initiator // lc.to_initiator.new()
+            ctrl.vci_target // lc.to_target.new()
+
 
     tty = arch.create('caba:vci_multi_tty', 'tty', names = ['tty0'])
     tty.addSegment('tty', 0x95400000, 0x20, False)
