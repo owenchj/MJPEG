@@ -146,11 +146,16 @@ mapper.map( "tg_split",
 )
 
 mapper.map( "split_demux_0",
-  buffer = "cram1_0",
-  status = "cram1_0"
+  buffer = "cram0_0",
+  status = "cram0_0"
 )
 
 mapper.map( "split_demux_1",
+  buffer = "cram0_0",
+  status = "cram0_0"
+)
+
+mapper.map( "demux_vld_0",
   buffer = "cram1_0",
   status = "cram1_0"
 )
@@ -160,7 +165,7 @@ mapper.map( "demux_vld_1",
   status = "cram1_0"
 )
 
-mapper.map( "demux_vld_0",
+mapper.map( "vld_iqzz_0",
   buffer = "cram1_0",
   status = "cram1_0"
 )
@@ -171,8 +176,8 @@ mapper.map( "vld_iqzz_0",
 )
 
 mapper.map( "vld_iqzz_1",
-  buffer = "cram2_0",
-  status = "cram2_0"
+  buffer = "cram1_0",
+  status = "cram1_0"
 )
 
 mapper.map( "iqzz_idct_0",
@@ -211,13 +216,13 @@ mapper.map( "huffman_1",
 )
 
 mapper.map( "quanti_0",
-  buffer = "cram1_0",
-  status = "cram1_0"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 mapper.map( "quanti_1",
-  buffer = "cram1_0",
-  status = "cram1_0"
+  buffer = "cram2_0",
+  status = "cram2_0"
 )
 
 # mapping the "prod0" and "cons0" tasks
@@ -235,14 +240,14 @@ mapper.map("split",
 
 mapper.map("demux0",
    run   = "cpu1_0",
-   stack = "cram0_0",
-   desc  = "cram0_0"
+   stack = "cram1_0",
+   desc  = "cram1_0"
 )
 
 mapper.map("demux1",
    run   = "cpu1_0",
-   stack = "cram0_0",
-   desc  = "cram0_0"
+   stack = "cram1_0",
+   desc  = "cram1_0"
 )
 
 mapper.map("vld0",
@@ -320,6 +325,7 @@ mapper.map(tcg,
 # Embedded software linked with the Mutek/S OS
 
 
-mapper.generate( MutekS() )
+#mapper.generate( MutekS() )
 
 tcg.generate( Posix() )
+#STATS_EVERY=500000 ./exe.muteks_hard > hello.txt
